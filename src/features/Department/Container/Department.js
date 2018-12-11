@@ -16,7 +16,7 @@ export class Department extends React.Component {
   super(props)
   this.state = cloneDeep(defaultDepartmentState)
    }
-  
+
   showAddDepartmentPopUp = (key, value) => {
     this.setState({ [key]: value });
   }
@@ -99,7 +99,7 @@ export class Department extends React.Component {
       if (dataResponse && dataResponse.error) {
         return this.showError('add', dataResponse.error);
       } else {
-        // await this.props.onRefetchDeptGrid();
+        await this.props.onRefetchDeptGrid();
         const message = {
           title: 'New Department added',
           caption: this.state.deptId.value + ' was added.',

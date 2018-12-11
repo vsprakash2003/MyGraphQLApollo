@@ -67,3 +67,10 @@ This installs apollo client and graphql package
 
 ## Add gitignore file 
    `touch .gitignore`
+
+## Git commands
+`git init
+`git add .`
+`git commit -m "first commit"`
+`git remote add https://github.com/vsprakash2003/MyGraphQLApollo-Client.git
+`git push -u origin master` 

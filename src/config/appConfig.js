@@ -1,5 +1,5 @@
   export const gridConfig = {
-    pageSize: 5,
+    pageSize: 15,
     pageSizes: [5, 15, 25, 50],
     itemsPerPageText: 'Items per page:',
   

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Department as StyledDepartment } from '../StyledComponents/Department';
 import { defaultDepartmentListHeaders, defaultPaginationListConfig } from './DepartmentConst';
-import { ALL_DEPARTMENTS} from './../../../graphql/query/department';
+import { ALL_DEPARTMENTS, DEPARTMENT_BY_ID} from './../../../graphql/query/department';
 import { Query } from 'react-apollo';
 import { get } from 'lodash';
 import { transformDepartmentDataForDropDown } from './../../../utils/transform/department';
@@ -19,6 +19,13 @@ export class DepartmentContainer extends React.Component {
   }
     state = {
       reload: 0,
+    }
+    
+    shouldComponentUpdate(){
+      console.log("There")
+    }
+    componentWillReceiveProps(nextProps){
+      console.log("oooooooooooooooooooooo", nextProps)
     }
 
     getDataTableHeaders = () => {
@@ -41,6 +48,12 @@ export class DepartmentContainer extends React.Component {
     onDepartmentIdChange = (departmentId) => {
       this.departmentId = departmentId;
       fetchDepartmentListData(this.pageNumber, this.pageLimit, this.sortOrder, this.sortField, this.departmentId);
+      // try {
+      // const dataFromStore = apolloClient.readQuery({query:DEPARTMENT_BY_ID})
+      // console.log(dataFromStore)
+      // }catch (er) {
+      //   console.log(er);
+      // }
     }
 
     refetchDeptGrid = () => {
@@ -49,9 +62,14 @@ export class DepartmentContainer extends React.Component {
 
       departmentList = (client, departmentIdList) => {
         const tableHeaders = this.getDataTableHeaders();
-        const variables = { offset: this.pageNumber, limit: this.pageLimit, sortOrder: this.sortOrder, sortField: this.sortField};
+        const variables = { departmentId:"", offset: this.pageNumber, limit: this.pageLimit, sortOrder: this.sortOrder, sortField: this.sortField};
+        if(this.departmentId){
+          variables.departmentId = this.departmentId
+        } 
+        console.log('variables is', variables)
         return (
-          <Query  query={ALL_DEPARTMENTS} variables={variables}
+        <div>{console.log("hey getting there", client, departmentIdList)}
+          <Query query={(this.departmentId) ? DEPARTMENT_BY_ID : ALL_DEPARTMENTS} variables={variables} 
           >
             {({ loading, error, data }) => {
               if (loading) {
@@ -60,17 +78,18 @@ export class DepartmentContainer extends React.Component {
               if (error) {
                 return `Error! ${error.message}`;
               }
+              console.log("data is", data)
               const paginationData = {
                 totalCount: 0,
                 pageNumber: this.pageNumber,
                 pageLimit: this.pageLimit,
-                sortField: this.sortField,
                 sortOrder: this.sortOrder,
+                sortField: this.sortField,
               };
               return (
                <StyledDepartment
            headers={tableHeaders}
-           departmentCollection= {data.allDepartments}
+           departmentCollection= {data.departmentById}
            departmentIdDropDownData={departmentIdList}
            paginationData={paginationData}
            handlePageChange={this.onPageChange}
@@ -80,12 +99,14 @@ export class DepartmentContainer extends React.Component {
            />);
             }}
           </Query>
+          </div>
         );
       };
 
       departmentIdList = (client) => {
+        const variables = { departmentId:"", offset: this.pageNumber, limit: this.pageLimit, sortOrder: this.sortOrder, sortField: this.sortField};
           return (
-            <Query query={ALL_DEPARTMENTS}>
+            <Query query={ALL_DEPARTMENTS} variables={variables}>
               {({ loading, error, data }) => {
                 if (loading) {
                   return <p>Loading....</p>;
@@ -93,7 +114,7 @@ export class DepartmentContainer extends React.Component {
                 if (error) {
                   return `Error! ${error.message}`;
                 }
-                const departmentData = get(data, 'allDepartments', null);
+                const departmentData = get(data, 'departmentById', null);
                 const departmentIdList = [];
                 if (departmentData) {
                   const departmentIdDropDownData = transformDepartmentDataForDropDown(departmentData, true)
@@ -108,6 +129,7 @@ export class DepartmentContainer extends React.Component {
       }
 
       render() {
+        console.log('called again')
         return (
           <div>
             {this.departmentIdList(apolloClient)}

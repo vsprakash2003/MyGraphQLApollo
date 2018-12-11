@@ -1,10 +1,11 @@
 import { showLoader, hideLoader, updateApolloStore } from '../../../utils/helper';
 import { apolloClient } from './../../../utils/apolloClient/apolloClient';
 import { DEPARTMENT_BY_ID, ALL_DEPARTMENTS} from '../../../graphql/query/department';
+import { defaultPaginationListConfig } from './DepartmentConst';
 
 export const fetchDepartmentListData = async (offset, limit, sortOrder, sortField, departmentId) => {
   showLoader();
-  const variables = {};
+  const variables = { departmentId:"", offset: offset, limit: limit, sortOrder: sortOrder, sortField: sortField };
 
   if (departmentId) {
     variables.departmentId = departmentId;
@@ -17,9 +18,14 @@ export const fetchDepartmentListData = async (offset, limit, sortOrder, sortFiel
   }).catch(() => {
   });
 
-  const cacheVariables = {};
+  const cacheVariables={ departmentId:"", offset: defaultPaginationListConfig.pageNumber, limit: defaultPaginationListConfig.pageLimit, 
+                         sortOrder: defaultPaginationListConfig.sortOrder, sortField: defaultPaginationListConfig.sortField };
+  if (departmentId) {
+    cacheVariables.departmentId = departmentId
+  }
+
   if(resdata.data) {
-    updateApolloStore(DEPARTMENT_BY_ID, cacheVariables, resdata.data);
+    updateApolloStore((departmentId) ? DEPARTMENT_BY_ID: ALL_DEPARTMENTS, cacheVariables, resdata.data);
   }
   hideLoader();
 };
