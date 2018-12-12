@@ -69,8 +69,21 @@ This installs apollo client and graphql package
    `touch .gitignore`
 
 ## Git commands
-`git init
+# for master branch
+`git init`
 `git add .`
 `git commit -m "first commit"`
-`git remote add https://github.com/vsprakash2003/MyGraphQLApollo-Client.git
+`git remote add https://github.com/vsprakash2003/MyGraphQLApollo-Client.git`
 `git push -u origin master` 
+
+# for coding branch
+`git checkout -b origin/c/{branch name}`
+`git add .`
+`git commit -m "second commit"
+`git push -u origin origin/c/{branch name}`
+
+# for merging code branch to master
+`git checkout master`
+`git pull origin master`
+`git merge origin/c/{branch name}`
+`git push -u origin master`
