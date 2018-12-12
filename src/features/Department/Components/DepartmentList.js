@@ -12,7 +12,6 @@ export class DepartmentList extends React.Component{
     );
   }
 
-
   getColumnData = (row, cell) => { 
     return <React.Fragment>{cell.value}</React.Fragment>;
   }

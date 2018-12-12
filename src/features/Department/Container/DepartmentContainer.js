@@ -20,13 +20,6 @@ export class DepartmentContainer extends React.Component {
     state = {
       reload: 0,
     }
-    
-    shouldComponentUpdate(){
-      console.log("There")
-    }
-    componentWillReceiveProps(nextProps){
-      console.log("oooooooooooooooooooooo", nextProps)
-    }
 
     getDataTableHeaders = () => {
       const headers = Object.assign([], defaultDepartmentListHeaders);
@@ -48,12 +41,7 @@ export class DepartmentContainer extends React.Component {
     onDepartmentIdChange = (departmentId) => {
       this.departmentId = departmentId;
       fetchDepartmentListData(this.pageNumber, this.pageLimit, this.sortOrder, this.sortField, this.departmentId);
-      // try {
-      // const dataFromStore = apolloClient.readQuery({query:DEPARTMENT_BY_ID})
-      // console.log(dataFromStore)
-      // }catch (er) {
-      //   console.log(er);
-      // }
+      this.setState({reload: this.state.reload+1})
     }
 
     refetchDeptGrid = () => {
@@ -61,14 +49,19 @@ export class DepartmentContainer extends React.Component {
     }
 
       departmentList = (client, departmentIdList) => {
-        const tableHeaders = this.getDataTableHeaders();
-        const variables = { departmentId:"", offset: this.pageNumber, limit: this.pageLimit, sortOrder: this.sortOrder, sortField: this.sortField};
-        if(this.departmentId){
-          variables.departmentId = this.departmentId
-        } 
-        console.log('variables is', variables)
+          const tableHeaders = this.getDataTableHeaders();
+          const variables = {
+            departmentId: "",
+            offset: this.pageNumber,
+            limit: this.pageLimit,
+            sortOrder: this.sortOrder,
+            sortField: this.sortField
+          };
+          if (this.departmentId) {
+            variables.departmentId = this.departmentId
+          }
+  
         return (
-        <div>{console.log("hey getting there", client, departmentIdList)}
           <Query query={(this.departmentId) ? DEPARTMENT_BY_ID : ALL_DEPARTMENTS} variables={variables} 
           >
             {({ loading, error, data }) => {
@@ -78,28 +71,35 @@ export class DepartmentContainer extends React.Component {
               if (error) {
                 return `Error! ${error.message}`;
               }
-              console.log("data is", data)
+              
+              const departmentData = get(data, 'departmentById', null);
               const paginationData = {
                 totalCount: 0,
                 pageNumber: this.pageNumber,
                 pageLimit: this.pageLimit,
                 sortOrder: this.sortOrder,
                 sortField: this.sortField,
-              };
+              }; 
+
+              let departmentList = [];
+              if (departmentData) {
+                departmentList = departmentData;
+              }
+
               return (
                <StyledDepartment
            headers={tableHeaders}
-           departmentCollection= {data.departmentById}
+           departmentCollection= {departmentList}
            departmentIdDropDownData={departmentIdList}
            paginationData={paginationData}
            handlePageChange={this.onPageChange}
+           handleListSort={this.onPageSortChange}
            handleDepartmentIdChange={this.onDepartmentIdChange}
            client={client}
            onRefetchDeptGrid={this.refetchDeptGrid}
            />);
             }}
           </Query>
-          </div>
         );
       };
 
@@ -129,7 +129,6 @@ export class DepartmentContainer extends React.Component {
       }
 
       render() {
-        console.log('called again')
         return (
           <div>
             {this.departmentIdList(apolloClient)}
