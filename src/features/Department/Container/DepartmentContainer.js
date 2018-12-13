@@ -23,6 +23,7 @@ export class DepartmentContainer extends React.Component {
 
     getDataTableHeaders = () => {
       const headers = Object.assign([], defaultDepartmentListHeaders);
+      headers.push({ key: 'edit', header: '' })
       return headers;
     }
 
