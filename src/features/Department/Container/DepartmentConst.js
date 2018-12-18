@@ -1,4 +1,5 @@
 import { gridConfig } from './../../../config/appConfig';
+import TEXT from './../message.json';
 
 export const defaultDepartmentState = {
   showAddDepartmentPopUp: false,
@@ -6,19 +7,16 @@ export const defaultDepartmentState = {
   deptId: {
     value: '',
     invalid: false,
-    validationText: 'Required field',
+    validationText: TEXT.VAL.ERROR_REQUIRED,
   },
   deptName: {
     value: '',
     invalid: false,
-    validationText: 'Required field',
+    validationText: TEXT.VAL.ERROR_REQUIRED,
   },
-  departmentId: {
-    value: '',
-    invalid: false,
-    validationText: ' ',
-  },
-  addDepartmentValidationText: 'Resolve Errors to add a new Department',
+  deptUuid: '',
+  addDepartmentValidationText: TEXT.VAL.FORM_ERROR,
+  editDepartmentValidationText: TEXT.VAL.FORM_DEPARTMENT_ERROR
 };
 
 

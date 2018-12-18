@@ -23,11 +23,12 @@ export const ADDNEWDEPARTMENT_MUTATION = gql`
 `;
 
 export const EDITDEPARTMENT_MUTATION = gql`
-  mutation editDepartment($deptData: UserInput!) {
+  mutation editDepartment($deptData: DeptInput!) {
     editDept(deptData: $deptData) {
-          uuid
+      dept{
           departmentId
           departmentName
+      } 
     }
   }
 `;

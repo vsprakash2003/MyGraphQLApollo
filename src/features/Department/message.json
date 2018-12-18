@@ -1,0 +1,13 @@
+{
+    "LABEL": {
+        "DEPARTMENT_NAME": "Department Name",
+        "DEPARTMENT_ID": "Department Id"
+    },
+    "VAL": {
+        "UPDATE_TITLE": "Department updated",
+        "EXIST_MESSAGE": "Department already exist",
+        "FORM_ERROR": "Resolve errors",
+        "FORM_DEPARTMENT_ERROR": "Resolve errors",
+        "ERROR_REQUIRED": "Required Field"
+    }
+}

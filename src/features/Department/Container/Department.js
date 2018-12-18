@@ -4,13 +4,14 @@ import { Button, FormLabel, Select, SelectItem } from "bonsai-components-react";
 import { cloneDeep, find, findIndex } from 'lodash';
 import { AddDepartmentPopUp } from '../StyledComponents/AddDepartmentPopUp';
 import { AddDepartment } from '../StyledComponents/AddDepartment';
+import { EditDepartment } from '../StyledComponents/EditDepartment'
 import { DepartmentList } from '../StyledComponents/DepartmentList';
 import { transformDepartmentGridData } from './../../../utils/transform/department';
 import { ALL_DEPARTMENTS} from './../../../graphql/query/department';
 import { ADDNEWDEPARTMENT_MUTATION, EDITDEPARTMENT_MUTATION } from './../../../graphql/mutation/department';
 import { readFromApolloStore, updateApolloStore, handleGraphQlError, showToast, showLoader, hideLoader } from '../../../utils/helper';
 import { defaultDepartmentState, defaultPaginationListConfig } from './DepartmentConst';
-
+ 
 export class Department extends React.Component {
   constructor(props) {
   super(props)
@@ -36,27 +37,26 @@ export class Department extends React.Component {
     
     handleShowEdit = (deptUuid) => {
       this.clearFormData();
-      const selectedDeptObject = find(this.props.deptCollection, (item) => {
+      const selectedDeptObject = find(this.props.departmentCollection, (item) => {
         return item.uuid === deptUuid;
       });
-  
+      
       const formData = cloneDeep(defaultDepartmentState);
-      formData.deptUuid.value = selectedDeptObject.deptId;
-      formData.deptName.value = selectedDeptObject.deptName;
-      formData.deptUuid = deptUuid;
+      formData.deptId.value = selectedDeptObject.departmentId;
+      formData.deptName.value = selectedDeptObject.departmentName;
+      formData.deptUuid = selectedDeptObject.uuid;
       
       formData.showEditDepartmentPopUp = true;
       this.initializeEditFormData(formData);
-    }
+    } 
   
-    handleHideEdit = () => {
+    handleHideEdit = () => { 
       this.showAddDepartmentPopUp('showEditDepartmentPopUp', false);
     }
   
     handleAddSubmit = (client) => {
       if (this.formValidation()) {
         const deptData = this.getDeptFormData();
-
         this.addDepartment(client, deptData);
         return true;
       }
@@ -66,7 +66,7 @@ export class Department extends React.Component {
     handleUpdateSubmit = (deptUuid) => {
       if (this.formValidation()) {
         const deptData = this.getDeptFormData();
-        this.updateDepartment(this.props.client, deptData, deptUuid);
+        this.updateDepartment(this.props.client, deptData, deptUuid); 
         return true;
       }
       return false;
@@ -81,10 +81,14 @@ export class Department extends React.Component {
     getDeptFormData = () => {
       const { deptId, deptName } = this.state;
       const deptData = {
-        departmentId: deptId,
-        departmentName: deptName,
+        departmentId: deptId.value,
+        departmentName: deptName.value,
       };
       return deptData;
+    }
+
+    initializeEditFormData = (formData) => {
+      this.setState({ ...formData });
     }
 
     addDepartment = async (client, deptData) => {
@@ -110,15 +114,17 @@ export class Department extends React.Component {
       }
     }
   
-    updateUser = async (client, deptData, deptUuid) => {
+    updateDepartment = async (client, deptData, deptUuid) => {
       showLoader();
       deptData.uuid = deptUuid;
+      deptData.departmentName = this.state.deptName
       const dataResponse = await this.props.client.mutate({
         variables: { deptData: deptData },
         mutation: EDITDEPARTMENT_MUTATION,
         update: (cache, { data }) => {
           const queryAndVariables = this.getQueryAndVariables();
           const dataFromStore = readFromApolloStore(queryAndVariables.query, queryAndVariables.variables);
+          console.log("datafromstore", dataFromStore)
           const allDepartments = dataFromStore.allDepartments;
           const index = findIndex(allDepartments.deptList, { uuid: deptUuid });
           if (data.editDept != null) {
@@ -159,13 +165,10 @@ export class Department extends React.Component {
   
     formValidation = () => {
       const { deptId, deptName } = this.state;
-  
       (deptId.value === '') ? this.setFormValid('deptId', true) : this.setFormValid('deptId', false);
       (deptName.value === '') ? this.setFormValid('deptName', true) : this.setFormValid('deptName', false);
       
-     
       if (deptId.value !== '' && deptName.value !== '') {
-     
           this.setState({ isFormValid: true });
           return true;
         }
@@ -205,6 +208,11 @@ export class Department extends React.Component {
     );
   }
   
+  editDepartmentPopupJSX = () => {
+    return (<EditDepartment deptUuid={this.state.deptUuid} handleUpdateSubmit={this.handleUpdateSubmit} handleHideEdit={this.handleHideEdit} 
+      departmentList={this.props.departmentDropDownData} formData={this.state} handleOnChange={this.setFormData} />);
+  }
+
   DepartmentIdDropDown = () => {
     return (
       <div><Select className="department-select"     
@@ -231,7 +239,7 @@ export class Department extends React.Component {
   render() {
     return (
       <React.Fragment>
-        {this.addDepartmentPopupJSX(this.props.client)}
+        {this.addDepartmentPopupJSX(this.props.client)} {this.editDepartmentPopupJSX()}
         <div className={this.props.className}>
           <div className="department-header">
             <FormLabel className="department-header-label">Departments</FormLabel>
@@ -247,7 +255,9 @@ export class Department extends React.Component {
             </div>
           
           <div className="department-list">
-            <DepartmentList headers={this.props.headers} departmentCollection={transformDepartmentGridData(this.props.departmentCollection)} />
+            <DepartmentList headers={this.props.headers} departmentCollection={transformDepartmentGridData(this.props.departmentCollection)} 
+                            handleShowEdit={this.handleShowEdit}
+            />
           </div>
         </div>
       </React.Fragment>
