@@ -26,6 +26,7 @@ export const EDITDEPARTMENT_MUTATION = gql`
   mutation editDepartment($deptData: DeptInput!) {
     editDept(deptData: $deptData) {
       dept{
+          uuid
           departmentId
           departmentName
       } 

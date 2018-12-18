@@ -13,7 +13,6 @@ export const readFromApolloStore = (query, variables) => {
   try {
     return apolloClient.readQuery({ query: query, variables: variables });
   } catch (er) {
-    console.log("Error is", er)
     return null;
   }
 };

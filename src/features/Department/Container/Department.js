@@ -74,7 +74,7 @@ export class Department extends React.Component {
     
     getQueryAndVariables = () => {
       const query = ALL_DEPARTMENTS
-      const variables_query = { offset: defaultPaginationListConfig.pageNumber, limit: defaultPaginationListConfig.pageLimit, sortOrder: defaultPaginationListConfig.sortOrder, sortField: defaultPaginationListConfig.sortField };
+      const variables_query = { departmentId: "", offset: defaultPaginationListConfig.pageNumber, limit: defaultPaginationListConfig.pageLimit, sortOrder: defaultPaginationListConfig.sortOrder, sortField: defaultPaginationListConfig.sortField };
       return { query: query, variables: variables_query };
     }
 
@@ -124,15 +124,14 @@ export class Department extends React.Component {
         update: (cache, { data }) => {
           const queryAndVariables = this.getQueryAndVariables();
           const dataFromStore = readFromApolloStore(queryAndVariables.query, queryAndVariables.variables);
-          console.log("datafromstore", dataFromStore)
-          const allDepartments = dataFromStore.allDepartments;
-          const index = findIndex(allDepartments.deptList, { uuid: deptUuid });
+          const allDepartments = dataFromStore.departmentById;
+          const index = findIndex(allDepartments, { uuid: deptUuid });
           if (data.editDept != null) {
-            allDepartments.deptList.splice(index, 1, data.editDept.dept);
-            updateApolloStore(queryAndVariables.query, queryAndVariables.variables, { allDepartments: allDepartments });
+            allDepartments.splice(index, 1, data.editDept.dept);
+            updateApolloStore(queryAndVariables.query, queryAndVariables.variables, { departmentById: allDepartments });
             hideLoader();
             showToast({
-              show: true, title: 'Department updated', caption: `${data.editDept.dept.deptId + ' ' + data.editDept.dept.deptName}'s data was updated`,
+              show: true, title: 'Department updated', caption: `${data.editDept.dept.departmentId + ' ' + data.editDept.dept.departmentName}'s data was updated`,
             });
             this.handleHideEdit();
           } else {
