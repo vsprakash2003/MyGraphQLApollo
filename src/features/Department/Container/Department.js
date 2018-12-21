@@ -80,9 +80,10 @@ export class Department extends React.Component {
 
     getDeptFormData = () => {
       const { deptId, deptName } = this.state;
+      console.log(this.state)
       const deptData = {
-        departmentId: deptId.value,
-        departmentName: deptName.value,
+        departmentId: deptId.value? deptId.value: deptId,
+        departmentName: deptName.value? deptName.value: deptName,
       };
       return deptData;
     }
@@ -94,6 +95,7 @@ export class Department extends React.Component {
     addDepartment = async (client, deptData) => {
       const variables = { deptData: deptData };
       showLoader();
+      console.log(deptData)
       const dataResponse = await this.props.client.mutate({
         variables: variables, mutation: ADDNEWDEPARTMENT_MUTATION,
       }).catch((res) => {
