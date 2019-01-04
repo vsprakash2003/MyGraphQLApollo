@@ -20,7 +20,7 @@ export class Department extends React.Component {
 
   showAddDepartmentPopUp = (key, value) => {
     this.setState({ [key]: value });
-  }
+  } 
 
   handleDepartmentIdSelectBoxChange = (selectedItem) => {
     this.props.handleDepartmentIdChange((selectedItem === 'Department: All') ? null : selectedItem);

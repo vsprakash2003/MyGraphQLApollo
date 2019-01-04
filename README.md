@@ -69,21 +69,44 @@ This installs apollo client and graphql package
    `touch .gitignore`
 
 ## Git commands
-# for master branch
+### for master branch
 `git init`
 `git add .`
 `git commit -m "first commit"`
 `git remote add https://github.com/vsprakash2003/MyGraphQLApollo-Client.git`
 `git push -u origin master` 
 
-# for coding branch
+### for coding branch
 `git checkout -b origin/c/{branch name}`
 `git add .`
 `git commit -m "second commit"
 `git push -u origin origin/c/{branch name}`
 
-# for merging code branch to master
+### for merging code branch to master
 `git checkout master`
 `git pull origin master`
 `git merge origin/c/{branch name}`
 `git push -u origin master`
+
+## for running build and serving from node
+### install serve package
+`mkdir ~/.npm-global`
+`npm config set prefix '~/.npm-global’`
+`export PATH=~/.npm-global/bin:$PATH`
+`npm install serve -g`
+
+`npm run build`
+`serve -p 3000 -s build`
+
+## for creating docker container
+1. Create dockerfile, .dockerignore and nginx.conf files
+2. Create the build file (this avoids running npm install in docker)
+3. Create a docker bridge (if not already exists and only if needed. This is to connect 2 containers)
+4. Do docker build
+5. Run docker container and add to bridge
+
+`npm run build`
+`docker network create -d bridge Myappbridge`
+`docker build . -t react-docker`
+`docker run --rm --network=Myappbridge -d -p 3000:80 --name Myclientdocker react-docker`
+

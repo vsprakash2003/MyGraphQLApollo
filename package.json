@@ -2,6 +2,7 @@
   "name": "myapp-client",
   "version": "0.1.0",
   "private": true,
+  "main": "src/index.js",
   "dependencies": {
     "@material-ui/core": "^3.4.0",
     "apollo-boost": "^0.1.19",
@@ -12,6 +13,7 @@
     "apollo-link-http": "^1.5.7",
     "apollo-link-state": "^0.4.2",
     "babel-polyfill": "^6.26.0",
+    "cors": "^2.8.5",
     "downshift": "^3.1.5",
     "flatpickr": "^4.5.2",
     "graphql": "^14.0.2",
@@ -43,6 +45,10 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "engines": {
+    "node": "10.13.0"
+  },
+  "proxy":"http://localhost:5000/graphql",
   "browserslist": [
     ">0.2%",
     "not dead",
