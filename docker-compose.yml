@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+    - 3000:80
+    volumes:
+    - ./:/opt/Myapps/GraphQL-App
+    - /opt/Myapps/GraphQL-App/node_modules
+    environment:
+      NODE_ENV: development      
+      CHOKIDAR_USEPOLLING: 1
