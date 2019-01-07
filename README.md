@@ -98,7 +98,7 @@ This installs apollo client and graphql package
 `npm run build`
 `serve -p 3000 -s build`
 
-## for creating docker container
+## for creating docker container (only local)
 1. Create dockerfile, .dockerignore and nginx.conf files
 2. Create the build file (this avoids running npm install in docker)
 3. Create a docker bridge (if not already exists and only if needed. This is to connect 2 containers)
@@ -110,3 +110,10 @@ This installs apollo client and graphql package
 `docker build . -t react-docker`
 `docker run --rm --network=Myappbridge -d -p 3000:80 --name Myclientdocker react-docker`
 
+## for creating docker container (production)
+1. Create dockerfile, .dockerignore and nginx.conf files
+2. Create the build file (this avoids running npm install in docker)
+3. Create docker-compose.yml file (this will run dockerfile)
+4. Create launch.sh shell script to bring up docker-compose file
+
+`sh launch.sh`
