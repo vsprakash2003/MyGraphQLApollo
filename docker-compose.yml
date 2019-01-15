@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     container_name: mydocker_client
     ports:
-    - 3000:80
+    - 8080:80
     volumes:
     - ./:/opt/Myapps/GraphQL-App
     - /opt/Myapps/GraphQL-App/node_modules

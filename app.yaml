@@ -16,11 +16,3 @@ liveness_check:
   failure_threshold: 2
   success_threshold: 2
   initial_delay_sec: 300
-
-readiness_check:
-  path: "/readiness_check"
-  check_interval_sec: 30
-  timeout_sec: 4
-  failure_threshold: 2
-  success_threshold: 2
-  app_start_timeout_sec: 300
