@@ -6,7 +6,6 @@ pipeline {
     stages {
         stage('Get-Node') {
             steps {
-                agent {
                     docker {
                         label 'dockerserver'
                         image 'node:8-alpine'
