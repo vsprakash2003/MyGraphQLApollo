@@ -1,17 +1,15 @@
 pipeline {
     agent {
-        label 'docker'
+        label 'dockerserver'
     }
 
     stages {
-        stage('Get Node') {
-            steps{
-                agent {
-                    docker {
-                        label 'docker'
-                        image 'node:8-alpine'
-                        args '-p 3000:3000'
-                    }    
+        stage('Get-Node') {
+            agent {
+                docker {
+                    label 'dockerserver'
+                    image 'node:8-alpine'
+                    args '-p 3000:3000'
                 }
             }
         }
