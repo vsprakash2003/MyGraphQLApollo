@@ -35,3 +35,6 @@ yarn-error.log*
 
 # Yarn generated files
 src/**/__generated__
+
+# Jenkins generated files
+jenkins/jenkins_home
