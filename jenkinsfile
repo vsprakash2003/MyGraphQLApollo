@@ -3,7 +3,8 @@ pipeline {
     
     environment {
         dockerHome = tool 'Mydocker'
-        env.PATH = '${dockerHome}+'/bin:'+ ${env.PATH}'
+        binpath = '/bin'
+        env.PATH = '${dockerHome}+${binpath)+ ${env.PATH}'
     }
 
     stages {
