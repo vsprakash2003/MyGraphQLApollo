@@ -9,10 +9,10 @@ pipeline {
     stages {
         stage('Initialize') {
             steps {
-                env.PATH = env.dockerHome+ env.binpath + env.PATH
+                echo env.PATH = env.dockerHome+ env.binpath + env.PATH
             }
         }
-        
+
         stage('Get-Node') { 
             agent {    
                 docker {
