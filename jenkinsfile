@@ -3,15 +3,10 @@ pipeline {
     
     environment {
         dockerHome = tool 'Mydocker'
+        env.PATH = "${dockerHome}/bin:${env.PATH}"
     }
 
     stages {
-        stage('Initialize') {
-            steps {   
-                env.PATH = "${dockerHome}/bin:${env.PATH}"
-            }    
-        }
-
         stage('Get-Node') { 
             agent {    
                 docker {
