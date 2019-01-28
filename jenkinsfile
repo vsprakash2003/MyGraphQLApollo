@@ -9,7 +9,9 @@ pipeline {
     stages {
         stage('Initialize') {
             steps {
-                echo env.PATH = env.dockerHome+ env.binpath + env.PATH
+                sh '''#!/bin/bash
+                    env.PATH = env.dockerHome+ env.binpath + env.PATH
+                   ''' 
             }
         }
 
