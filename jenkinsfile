@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        dockerHome = 'usr/local'
+        dockerHome = tool 'Mydocker'
         binpath = '/bin:'       
     }
 
