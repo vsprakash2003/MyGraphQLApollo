@@ -3,15 +3,14 @@ pipeline {
     
     environment {
         dockerHome = tool 'Mydocker'
-        binpath = '/bin:'
-        dockerPath = '/usr/local/bin/docker:'      
+        binpath = '/bin:'    
     }
 
     stages {
         stage('Initialize') {
             steps {
                 script {
-                    env.PATH = dockerPath + env.dockerHome + env.binpath + env.PATH
+                    env.PATH = env.dockerHome + env.binpath + env.PATH
                     echo env.PATH
                 }           
             }
