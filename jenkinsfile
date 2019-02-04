@@ -19,9 +19,11 @@ pipeline {
 
         stage('Get-Node') { 
             agent {    
-                docker {
-                    image 'node:9-alpine'
-                    args '-p 3000:3000'
+                docker.withTool('Mydocker') {
+                    docker {
+                        image 'node:9-alpine'
+                        args '-p 3000:3000'
+                    }
                 }
             }    
             steps {
