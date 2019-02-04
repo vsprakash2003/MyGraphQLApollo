@@ -4,7 +4,7 @@ pipeline {
     environment {
         dockerHome = tool 'Mydocker'
         binpath = '/bin:'
-        dockerPath = '/usr/local/bin:'      
+        dockerPath = '/usr/local/bin/docker:'      
     }
 
     stages {
