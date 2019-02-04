@@ -27,9 +27,6 @@ pipeline {
                     }
                 }
             }
-            steps {
-                echo "Node built"
-            }    
         }
     
         stage('Build') { 
