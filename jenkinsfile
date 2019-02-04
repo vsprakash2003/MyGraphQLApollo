@@ -7,6 +7,15 @@ pipeline {
     }
 
     stages {
+        stage('Initialize') {
+            steps {
+                script {
+                    echo "Environment path is"
+                    echo env.PATH
+                }           
+            }
+        }
+
         stage('Get-Node') { 
             agent {    
                     docker {
