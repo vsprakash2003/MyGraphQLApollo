@@ -17,14 +17,15 @@ pipeline {
         }
 
         stage('Get-Node') { 
-            steps {
-                docker.withTool('Mydocker') {   
+            agent {    
                     docker {
                         image 'node:9-alpine'
                         args '-p 3000:3000'
                     }
                 }
-            }
+            steps {
+                echo "Node built"
+            }    
         }
     
         stage('Build') { 
