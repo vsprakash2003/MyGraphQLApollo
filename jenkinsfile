@@ -3,8 +3,7 @@ pipeline {
     
     environment {
         dockerHome = tool 'Mydocker'
-        binpath = '/bin:' 
-        CI = 'true'      
+        binpath = '/bin:'      
     }
 
     stages {
@@ -18,14 +17,14 @@ pipeline {
         }
 
         stage('Get-Node') { 
-            agent {    
+              
                 docker.withTool('Mydocker') {
                     docker {
                         image 'node:9-alpine'
                         args '-p 3000:3000'
                     }
                 }
-            }    
+            
             steps {
                 echo "Node built"
             }    
