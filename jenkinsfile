@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'Mydockerserver'
-    }
+    agent any
     
     environment {
         dockerHome = tool 'Mydocker'
@@ -12,7 +10,6 @@ pipeline {
         stage('Get-Node') { 
             agent {    
                     docker {
-                        label 'Mydockerserver'
                         image 'node:9-alpine'
                         args '-p 3000:3000'
                     }
