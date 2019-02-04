@@ -11,7 +11,7 @@ pipeline {
         stage('Initialize') {
             steps {
                 script {
-                    env.PATH = env.dockerHome + env.binpath + dockerPath + env.PATH
+                    env.PATH = dockerPath + env.dockerHome + env.binpath + env.PATH
                     echo env.PATH
                 }           
             }
