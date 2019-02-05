@@ -65,38 +65,48 @@ This installs apollo client and graphql package
    13. Add subfolders under each feature for Containers, Components and Styled Components
 14. Add app.js, AsyncLoad.js, Authorization.js under src
 
-## Add gitignore file 
-   `touch .gitignore`
+## Add gitignore file
+```bash 
+   touch .gitignore
+```
 
 ## Git commands
 ### for master branch
-`git init`
-`git add .`
-`git commit -m "first commit"`
-`git remote add https://github.com/vsprakash2003/MyGraphQLApollo-Client.git`
-`git push -u origin master` 
+```git commands
+git init
+git add .
+git commit -m "first commit"
+git remote add https://github.com/vsprakash2003/MyGraphQLApollo-Client.git
+git push -u origin master 
+```
 
 ### for coding branch
-`git checkout -b origin/c/{branch name}`
-`git add .`
-`git commit -m "second commit"
-`git push -u origin origin/c/{branch name}`
+```git commands
+git checkout -b origin/c/{branch name}
+git add .
+git commit -m "second commit"
+git push -u origin origin/c/{branch name}
+```
 
 ### for merging code branch to master
-`git checkout master`
-`git pull origin master`
-`git merge origin/c/{branch name}`
-`git push -u origin master`
+```git commands
+git checkout master
+git pull origin master
+git merge origin/c/{branch name}
+git push -u origin master
+```
 
 ## for running build and serving from node
 ### install serve package
-`mkdir ~/.npm-global`
-`npm config set prefix '~/.npm-global’`
-`export PATH=~/.npm-global/bin:$PATH`
-`npm install serve -g`
+``` bash
+mkdir ~/.npm-global
+npm config set prefix '~/.npm-global’
+export PATH=~/.npm-global/bin:$PATH
+npm install serve -g
 
-`npm run build`
-`serve -p 3000 -s build`
+npm run build
+serve -p 3000 -s build
+```
 
 ## for creating docker container (only local)
 1. Create dockerfile, .dockerignore and nginx.conf files
@@ -105,10 +115,12 @@ This installs apollo client and graphql package
 4. Do docker build
 5. Run docker container and add to bridge
 
-`npm run build`
-`docker network create -d bridge Myappbridge`
-`docker build . -t react-docker`
-`docker run --rm --network=Myappbridge -d -p 3000:80 --name Myclientdocker react-docker`
+``` bash
+npm run build
+docker network create -d bridge Myappbridge
+docker build . -t react-docker
+docker run --rm --network=Myappbridge -d -p 3000:80 --name Myclientdocker react-docker
+```
 
 ## for creating docker container (production)
 1. Create dockerfile, .dockerignore and nginx.conf files
@@ -116,7 +128,10 @@ This installs apollo client and graphql package
 3. Create docker-compose.yml file (this will run dockerfile)
 4. Create launch.sh shell script to bring up docker-compose file
 
-`sh launch.sh`
+```bash
+sh launch.sh
+```
+
 ## for deploying docker containers in google cloud using Kubernetes
 1. Setup account in google app engine
 2. Create a project and a bucket
@@ -132,34 +147,37 @@ This installs apollo client and graphql package
 
 ## commands for installing and setting up docker images in google cloud
 ### {} braces refer to your instances like projects, user id, naming etc.
-`xcode-select —install`
-`glcoud init`
-`gcloud config set project {your google cloud project id}`
-`gcloud config set compute/zone {google cloud region you selected}`
-`gcloud auth configure-docker`
-`docker login`
-`docker tag mydocker_client:latest {your docker user name}/dockerhub:{myfirstclientimagepush}`
-`docker push {your docker user name}/dockerhub:{myfirstclientimagepush}`
-`docker tag mydocker_server:latest {your docker user name}/dockerhub:{myfirstserverimagepush}`
-`docker push {your docker user name}/dockerhub:{myfirstserverimagepush}`
-`gcloud container clusters create mygraphql-cluster --num-nodes=2`
-`kubectl create secret docker-registry {provide a credential name here}` `--docker-server=https://index.docker.io/v1/ --docker-username={your docker user name}` `--docker-password={your dockerhub password} --docker-email={email id used for dockerhub}`
-`kubectl create -f my-graphql-server-pod.yaml`
+```bash
+xcode-select —install
+glcoud init
+gcloud config set project {your google cloud project id}
+gcloud config set compute/zone {google cloud region you selected}
+gcloud auth configure-docker
+docker login
+docker tag mydocker_client:latest {your docker user name}/dockerhub:{myfirstclientimagepush}
+docker push {your docker user name}/dockerhub:{myfirstclientimagepush}
+docker tag mydocker_server:latest {your docker user name}/dockerhub:{myfirstserverimagepush}
+docker push {your docker user name}/dockerhub:{myfirstserverimagepush}
+gcloud container clusters create mygraphql-cluster --num-nodes=2
+kubectl create secret docker-registry {provide a credential name here} --docker-server=https://index.docker.io/v1/ --docker-username={your docker user name} --docker-password={your dockerhub password} --docker-email={email id used for dockerhub}
+kubectl create -f my-graphql-server-pod.yaml
+```
 
 ## some additional commands for viewing, deleting stuff
-`gsutil acl get gs://{your google cloud project url}` to get access control list
-`docker rmi {your docker user name}/dockerhub:{myfirstimagepush}` to delete an existing image
-`cat ~/.docker/config.json` to view config file from docker. This file has good details
-`kubectl get secret {credential name you gave} --output=yaml` to view credentials imported
-`kubectl get secret {credential name you gave} --output="jsonpath={.data.\.dockerconfigjson}" | base64 --decode` to decode the base 64 encoded output from previous command
-`kubectl delete service mygraphql-service --grace-period=30` to delete a service
-`kubectl delete pod mygraphql-container --grace-period=30` to delete a pod
-`kubectl get pods` to get details on a pod
-`kubectl get service {service name}` to get details on the service
-`kubectl describe pods` to get more indepth information on the pod
-`kubectl get service mygraphql-service` to view the external ip
-`curl {external ip}` to view response
-
+```bash
+gsutil acl get gs://{your google cloud project url} #to get access control list
+docker rmi {your docker user name}/dockerhub:{myfirstimagepush} #to delete an existing image
+cat ~/.docker/config.json #to view config file from docker. This file has good details
+kubectl get secret {credential name you gave} --output=yaml  #to view credentials imported
+kubectl get secret {credential name you gave} --output="jsonpath={.data.\.dockerconfigjson}" | base64 --decode  #to decode the base 64 encoded output from previous command
+kubectl delete service mygraphql-service --grace-period=30  #to delete a service
+kubectl delete pod mygraphql-container --grace-period=30 #to delete a pod
+kubectl get pods #to get details on a pod
+kubectl get service {service name} #to get details on the service
+kubectl describe pods #to get more indepth information on the pod
+kubectl get service mygraphql-service #to view the external ip
+curl {external ip} #to view response
+```
 ## for deploying application in google app engine
 1. Setup account in google app engine
 2. Create a project and a bucket
@@ -169,8 +187,11 @@ This installs apollo client and graphql package
 6. Browse the deployed application using the URL which you can obtain from the terminal after the app is deployed
 
 ## commands for deploying the application in google app engine
-`gcloud app deploy`
-`gcloud app browse `
+```bash
+gcloud app deploy
+gcloud app browse
+```
+
 ### some points to note while deploying to google app engine
 1. Specify runtime as 'custom' and env as 'flex'
 2. When runtime is specified as 'custom', google app engine will look for a dockerfile or docker-compose file to build and run docker
@@ -184,11 +205,13 @@ This installs apollo client and graphql package
    5. 130.211.0.0/22
    6. 172.17.0.1
 6. The readiness_check in app.yaml fails due to application timeout. Even increasing the timeout time (app_start_timeout_sec) did not work. Hence readiness_check has been removed. If you want to include readiness_check in app.yaml, here is the code
-   `readiness_check:
+   ```docker
+    readiness_check:
     path: "/readiness_check"
     check_interval_sec: 30
     timeout_sec: 4
     failure_threshold: 2
     success_threshold: 2
-    app_start_timeout_sec: 900`
+    app_start_timeout_sec: 900
+    ```
 7. Changing the server name to localhost in nginx.conf should also work as internally google app engine sees services deployed in the same project as localhost. But for clarity sake, the server name specifies the seperate backend service
